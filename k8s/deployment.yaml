@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-case-backend
+spec:
+  selector:
+    matchLabels:
+      app: test-case-backend 
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: test-case-backend
+    spec:
+      containers:
+      - name: test-case-backend
+        image: yahyalatas/test-case-backend
+        ports:
+        - containerPort: 3001

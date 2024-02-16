@@ -1,7 +1,6 @@
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { LogsService } from './logs/logs.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -20,7 +19,7 @@ async function bootstrap() {
     ignoreGlobalPrefix: false,
   });
   SwaggerModule.setup('api/documentation', app, document);
-  app.useGlobalFilters(new LogsService(AdapterHost));
   await app.listen(3001);
 }
 bootstrap();
+

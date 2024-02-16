@@ -32,36 +32,4 @@ export class AuthController {
   getProfile(@Request() req) {
     return req.user;
   }
-
-  @Put('forget-password')
-  async forgetPassword(@Req() resetPassword: Request) {
-    const body = resetPassword.body as any;
-    try {
-      if (body.email && body.oldPassword) {
-        const isValidPassword = await this.authService.checkPassword(
-          body.email,
-          body.oldPassword,
-        );
-        if (isValidPassword) {
-          await this.usersService.setPassword(body.email, body.newPassword);
-          if (isValidPassword) {
-            return { result: 'Success' };
-          } else {
-            return { result: 'Failed' };
-          }
-        } else {
-          return { result: 'WRONG CURRENT PASSWORD' };
-        }
-      } else if (body.newPasswordToken) {
-        // var forgottenPasswordModel = await this.authService.getForgottenPasswordModel(resetPassword.body.newPasswordToken);
-        // isNewPasswordChanged = await this.userService.setPassword(forgottenPasswordModel.email, resetPassword.body.newPassword);
-        // if(isNewPasswordChanged) await forgottenPasswordModel.remove();
-      } else {
-        return { result: 'CHANGE PASSWORD ERROR' };
-      }
-      return { result: 'PASSWORD_CHANGED' };
-    } catch (error) {
-      return { result: 'CHANGE PASSWORD ERROR' };
-    }
-  }
 }

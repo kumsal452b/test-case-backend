@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 
 @Schema()
-export class Hea {
+export class Investment {
   @Prop({ type: Types.ObjectId, ref: 'Site' })
   site: Types.ObjectId;
   @Prop({ index: true })
@@ -27,4 +27,4 @@ export class Hea {
   updated: Date;
 }
 
-export const InvestmentSchema = SchemaFactory.createForClass(Hea);
+export const InvestmentSchema = SchemaFactory.createForClass(Investment);

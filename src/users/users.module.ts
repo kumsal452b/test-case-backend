@@ -1,13 +1,19 @@
-import { Module } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { UsersController } from './users.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
-import { Permision } from 'src/permisions/entities/permision.entity';
-import { SecurityRole } from 'src/entities/roles.entity';
+import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
+import { UsersService } from "./users.service";
+import { UsersController } from "./users.controller";
+import { RequestLimitMiddleware } from "src/middleware/RequestLimitMiddleware";
+import { MongooseModule } from "@nestjs/mongoose";
+import { Users, UsersSchema } from "src/schemas/users.schema";
+
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Permision, SecurityRole])],
   controllers: [UsersController],
   providers: [UsersService],
+  imports: [
+    MongooseModule.forFeature([{ name: Users.name, schema: UsersSchema }]),
+  ],
 })
-export class UsersModule {}
+export class UsersModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(RequestLimitMiddleware).forRoutes("users/stream");
+  }
+}
